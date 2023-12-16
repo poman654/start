@@ -19,7 +19,7 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.device.customer.customer_name
 
     def my_serial_number(self, obj):
-        return obj.device.my_serial_number
+        return obj.device.serial_number
 
     def my_device_model(self, obj):
         return obj.device.analyzer.model
