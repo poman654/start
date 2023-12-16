@@ -1,6 +1,3 @@
-from django.core.exceptions import ValidationError
-from django.db.models import ForeignKey
-from django.utils.translation import gettext_lazy
 from django.db import models
 from datetime import datetime
 
@@ -28,7 +25,7 @@ class Customer(models.Model):
         verbose_name = "Описание контрагента"
         verbose_name_plural = "Описание контрагентов"
 
-    # todo roman идея для адреса - разбить его на блоки "город", "улица", "дом", "корпус" и т.д.
+    # todo luchanos идея для адреса - разбить его на блоки "город", "улица", "дом", "корпус" и т.д.
     customer_name = models.TextField(verbose_name="Наименование организации")
     customer_address = models.TextField(verbose_name="Адрес")
     customer_city = models.TextField(verbose_name="Город")
@@ -43,7 +40,7 @@ class DeviceInField(models.Model):
     class Meta:
         db_table = "devices_in_fields"
         verbose_name = "Оборудование в полях"
-        verbose_name_plural ="Оборудование в полях"
+        verbose_name_plural = "Оборудование в полях"
 
     serial_number = models.TextField(verbose_name="Серийный номер")
     customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, verbose_name="Пользователь")
@@ -67,8 +64,8 @@ class Order(models.Model):
                 ("in progress", "в работе"),
                 ("need info", "нужна информация"))
 
-    # todo roman надо подумать над процессом движения прибора от клиента к клиенту, чтобы заявки не пропадали
-    # todo roman спросить у Гриши нужно ли поле для фиксации корректирующих действий? (Скорее всего да)
+    # todo luchanos надо подумать над процессом движения прибора от клиента к клиенту, чтобы заявки не пропадали
+    # todo luchanos спросить у Гриши нужно ли поле для фиксации корректирующих действий? (Скорее всего да)
     device = models.ForeignKey(DeviceInField, verbose_name="Оборудование", on_delete=models.RESTRICT)
     order_description = models.TextField(verbose_name="Описание")
     created_dt = models.DateTimeField(verbose_name="Создано", auto_now_add=True)
@@ -81,7 +78,6 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         self.last_updated_dt = datetime.now()
         super().save(*args, **kwargs)
-
 
 
 

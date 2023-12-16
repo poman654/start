@@ -7,14 +7,14 @@ from .models import Order, Device, Customer, DeviceInField
 
 
 class DeviceAdmin(admin.ModelAdmin):
-    # todo roman на случай работы с запчастями можно добавить поиск по id
-    search_fields = ('manufacturer', 'model') # поля по которым будет осуществляться поиск
-    list_display = ('id', 'manufacturer', 'model') # поля, которые будут отображаться
+    # todo luchanos на случай работы с запчастями можно добавить и поиск по id
+    search_fields = ('manufacturer', 'model')  # поля по которым будет осуществляться поиск
+    list_display = ('id', 'manufacturer', 'model')  # поля, которые будут отображаться в админке
 
 
 class OrderAdmin(admin.ModelAdmin):
 
-    # задаем методы для получения полей из связанных таблиц
+    # задаём методы для получения полей из связанных таблиц
     def my_customer(self, obj):
         return obj.device.customer.customer_name
 
@@ -27,7 +27,7 @@ class OrderAdmin(admin.ModelAdmin):
     def my_device_manufacturer(self, obj):
         return obj.device.analyzer.manufacturer
 
-    # задаем отображаемое название полей в админке
+    # задаём отображаемое название полей в админке
     my_customer.short_description = 'Пользователь'
     my_serial_number.short_description = 'Серийный номер'
     my_device_model.short_description = 'Модель'
@@ -40,7 +40,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('device__customer__customer_name', 'device__id', 'device__serial_number',
                      'device__analyzer__model', 'device__analyzer__manufacturer')
     # поля для того, чтобы заменить выпадашку на ввод информации
-    raw_id_fields = ('device',)
+    raw_id_fields = ('device', )
 
 
 class CustomerAdmin(admin.ModelAdmin):
@@ -62,7 +62,8 @@ class DeviceInFieldAdmin(admin.ModelAdmin):
     my_device_manufacturer.short_description = 'Производитель'
     my_device_model.short_description = 'Модель'
 
-    search_fields = ('serial_number',)
+    # todo luchanos сделать поиск по контрагентам
+    search_fields = ('serial_number', )
     raw_id_fields = ('customer', 'analyzer')
     list_display = ('id', 'my_device_manufacturer', 'my_device_model', 'serial_number', 'my_customer', 'owner_status')
 
@@ -71,4 +72,3 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Device, DeviceAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(DeviceInField, DeviceInFieldAdmin)
-
